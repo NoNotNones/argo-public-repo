@@ -1,0 +1,12 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: loony-dev-cluster
+servers: 1
+agents: 2
+options:
+  k3s:
+    extraArgs:
+      - arg: --tls-san=192.168.68.59
+        nodeFilters:
+          - server:*

@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postsync-notify
+  namespace: default
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: notify
+        image: busybox
+        command:
+        - sh
+        - -c
+        - |
+          echo "PostSync Hook: Deployment complete!"
+          echo "All waves deployed successfully."
+          echo "Sending notification... (in real world: Slack, email, etc.)"
+          sleep 2
+          echo "Notification sent!"
+      restartPolicy: Never
+  backoffLimit: 1

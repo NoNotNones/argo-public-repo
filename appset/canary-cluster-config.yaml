@@ -1,0 +1,12 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: loony-canary-cluster
+servers: 1
+agents: 2
+options:
+  k3s:
+    extraArgs:
+      - arg: --tls-san=10.84.40.5
+        nodeFilters:
+          - server:*

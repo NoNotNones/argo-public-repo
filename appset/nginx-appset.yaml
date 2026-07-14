@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-appset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: loony-canary-cluster
+            url: https://$IP:55075
+          - cluster: loony-dev-cluster
+            url: https://$IP:63351
+  template:
+    metadata:
+      name: 'nginx-{{cluster}}'
+    spec:
+      project: loony-argocd
+      source:
+        repoURL: https://github.com/Loony-User/loony-argocd-public-repo
+        targetRevision: HEAD
+        path: nginx_yaml_files
+      destination:
+        server: '{{url}}'
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
