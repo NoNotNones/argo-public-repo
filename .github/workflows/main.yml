@@ -18,7 +18,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install PyYAML
       - name: Run Feed Generator
-        run: python feed.py
+        run: python docs/feed.py
       - name: Push Repo
         run: |
           git config user.name "GitHub Actions TEST "
