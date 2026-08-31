@@ -1,28 +1,36 @@
 name: Generate Podcast Feed
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install PyYAML
+
       - name: Run Feed Generator
-        run: python docs/feed.py
+        working-directory: docs
+        run: python feed.py
+
       - name: Push Repo
         run: |
-          git config user.name "GitHub Actions TEST "
-          git config user.email "github-actions@stit.local"
-          git add .
-          git commit -m "modified feed"
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@github.com"
+          git add docs/podcast.xml
+          git commit -m "Update podcast feed" || echo "No changes to commit"
           git push
